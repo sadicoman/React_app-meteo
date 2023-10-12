@@ -1,0 +1,41 @@
+// @function calculate-color($index) {
+//     // Assurez-vous que la valeur de base et le pas sont configurés pour obtenir le dégradé désiré
+//     $base-value: 200; // Valeur de base pour la couleur (200 est un gris clair)
+//     $step: 10; // Pas pour assombrir la couleur (10 va assombrir la couleur un peu à chaque étape)
+//     $color-value: $base-value - ($index * $step);
+//     @return rgb(
+//         $color-value,
+//         $color-value,
+//         $color-value
+//     ); // Retourne une couleur grisée basée sur l'index
+// }
+
+.prevision__list {
+    display: flex;
+    flex-direction: column;
+
+    .prevision_el {
+        display: grid;
+        grid-template-columns: 5fr 1fr 1fr;
+        gap: var(--margin-mb);
+        padding: var(--padding-mb);
+        align-items: center;
+
+        $base-color: #1e5b8a;
+        $num-items: 6; // Supposant que vous ayez toujours 6 éléments
+        $darken-step: 2%; // Pourcentage d'assombrissement pour chaque étape
+
+        @for $i from 1 through $num-items {
+            &:nth-child(#{$i}) {
+                background-color: darken($base-color, $i * $darken-step);
+            }
+        }
+        img {
+            width: 100%;
+        }
+
+        p {
+            font-size: 25px;
+        }
+    }
+}

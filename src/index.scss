@@ -1,0 +1,95 @@
+:root {
+    --color-primary: #1e5b8a;
+    // --color-primary-variant: #2e50b0;
+    // --color-burger: #2e50b0;
+    --color-background: #1d4278;
+    // --color-background-secondary: #fbfcfd;
+    // --color-surface: #ffffff;
+    // --color-ok: #3ce775;
+    // --color-error: #e74c3c;
+    // --color-primary-hover: #6a89e6;
+    // --color-on-burger: #ffffff;
+    // --color-on-border-background: #d5d8dc;
+    // --color-on-primary: #ffffff;
+    // --color-on-secondary: #000000;
+    --color-on-background: #fff;
+    // --color-on-surface: #333333;
+    // --color-on-error: #ffffff;
+    // --color-on-primary-hover: #ffffff;
+    // --color-on-footer-hover: #ffffff;
+    // --color-secondary: #f2994a;
+    // --color-secondary-variant: #b5651d;
+    // --color-on-secondary: #ffffff;
+    // --color-on-secondary-variant: #ffffff;
+
+    --margin-mb: 24px;
+    --margin-x-mb: 14px;
+    --padding-mb: 12px;
+    --padding-x-mb: 8px;
+
+    --font-size-h1: 2.5rem;
+    --font-size-h2: 2rem;
+    --font-size-h3: 1.75rem;
+    --font-size-h4: 1.5rem;
+    --font-size-h5: 1.25rem;
+    --font-size-h6: 0.875rem;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap");
+
+/* Type */
+$font-text: "Roboto", sans-serif;
+$font-title: "Roboto Condensed", sans-serif;
+
+.body,
+.footer {
+    font-family: $font-text;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--color-on-background);
+    background-color: var(--color-background);
+}
+/* Styles des TITRES */
+.title {
+    font-family: $font-title;
+    font-size: var(--font-size-h1);
+    letter-spacing: -0.5px;
+}
+.title--niveau2 {
+    font-size: var(--font-size-h2);
+    font-weight: lighter;
+}
+.title--left {
+    text-align: left;
+}
+.title--niveau3 {
+    font-size: var(--font-size-h3);
+    font-weight: normal;
+    letter-spacing: 0px;
+}
+.title--niveau4 {
+    font-size: var(--font-size-h4);
+    font-weight: normal;
+    letter-spacing: 0.15px;
+}
+.title--niveau5 {
+    font-size: var(--font-size-h5);
+    font-weight: normal;
+}
+.title--niveau6 {
+    font-size: var(--font-size-h6);
+    font-weight: normal;
+}
+.uppercase {
+    text-transform: uppercase;
+}
+.bold {
+    font-weight: bold;
+}
+.text-center {
+    text-align: center;
+}
+
+.temperature {
+  font-size: 3rem;
+}

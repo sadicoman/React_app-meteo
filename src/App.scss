@@ -1,0 +1,21 @@
+/*
+ * GRILLES + FlexBox CSS
+** =============================================================== */
+
+.section {
+	margin: auto;
+	max-width: 400px;
+	display: grid;
+	padding: 15px;
+	grid-template-columns: repeat(5, 1fr);
+	grid-gap: 16px 8px;
+	padding-bottom: 2rem;
+
+	& > * {
+		grid-column: 1/-1;
+		max-width: 100%;
+	}
+	&--margin {
+		margin-bottom: 3em;
+	}
+}

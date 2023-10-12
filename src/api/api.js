@@ -39,6 +39,44 @@ const api = {
             throw error;
         }
     },
+    fetchUVIndex: async (lat, lon) => {
+        // eslint-disable-next-line no-useless-catch
+        try {
+            const response = await axios.get(
+                "https://api.openweathermap.org/data/2.5/uvi",
+                {
+                    params: {
+                        lat: lat,
+                        lon: lon,
+                        appid: "dc8c9152e8adaad0ec8bf635818c0d42",
+                    },
+                },
+            );
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
+    fetchForecast: async (lat, lon) => {
+        // eslint-disable-next-line no-useless-catch
+        try {
+            const response = await axios.get(
+                "https://api.openweathermap.org/data/2.5/onecall",
+                {
+                    params: {
+                        lat: lat,
+                        lon: lon,
+                        exclude: "current,minutely,hourly,alerts",
+                        appid: "dc8c9152e8adaad0ec8bf635818c0d42",
+                        units: "metric",
+                    },
+                },
+            );
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
 };
 
 export default api;

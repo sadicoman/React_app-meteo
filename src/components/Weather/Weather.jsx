@@ -1,28 +1,29 @@
 // src/components/Weather/Weather.js
 import React, { useState, useEffect } from "react";
+import getWeatherIcon from "../../utils/getWeatherIcon";
 import api from "../../api/api";
 import "./Weather.scss";
 
 const Weather = () => {
     const [temperature, setTemperature] = useState("xx.x");
     const [city, setCity] = useState("Paris");
-    const [cityInput, setCityInput] = useState("");
+    const [humidity, setHumidity] = useState(null);
+    const [uvIndex, setUvIndex] = useState(null);
+    const [windSpeed, setWindSpeed] = useState(null);
+    const [date, setDate] = useState(new Date());
+    const [weatherData, setWeatherData] = useState(null);
 
     const fetchWeatherWithCoords = async (lat, lon) => {
         try {
-            const data = await api.fetchWeatherWithCoords(lat, lon);
-            setTemperature(data.main.temp);
-            setCity(data.name);
-        } catch (error) {
-            alert("Un problème est intervenu, merci de revenir plus tard.");
-        }
-    };
+            const weatherData = await api.fetchWeatherWithCoords(lat, lon);
+            setWeatherData(weatherData); // Ajoutez cette ligne pour mettre à jour weatherData
+            setTemperature(weatherData.main.temp);
+            setCity(weatherData.name);
+            setHumidity(weatherData.main.humidity);
+            setWindSpeed(weatherData.wind.speed);
 
-    const handleCityChange = async () => {
-        try {
-            const data = await api.fetchWeather(cityInput);
-            setTemperature(data.main.temp);
-            setCity(data.name);
+            const uvData = await api.fetchUVIndex(lat, lon);
+            setUvIndex(uvData.value);
         } catch (error) {
             alert("Un problème est intervenu, merci de revenir plus tard.");
         }
@@ -39,33 +40,91 @@ const Weather = () => {
         } else {
             alert("La géolocalisation n'est pas prise en charge par ce navigateur.");
         }
+
+        const intervalId = setInterval(() => {
+            setDate(new Date());
+        }, 1000);
+
+        return () => clearInterval(intervalId); // Nettoyage de l'intervalle lors du démontage du composant
     }, []);
 
+    const interpretUVIndex = (uvIndex) => {
+        if (uvIndex < 3) {
+            return "Faible";
+        } else if (uvIndex < 6) {
+            return "Modéré";
+        } else if (uvIndex < 8) {
+            return "Élevé";
+        } else if (uvIndex < 11) {
+            return "Très élevé";
+        } else {
+            return "Extrême";
+        }
+    };
+
     return (
-        <div className="container">
-            <div className="row justify-content-center">
-                <div className="col-md-8">
-                    <h1 className="text-center mt-5">Météo</h1>
-                    <div className="text-center">
-                        <span id="ville">{city}</span>
-                        <div id="temperature">
-                            <span id="temperature_label">{temperature}</span> °C
-                        </div>
-                    </div>
-                </div>
+        <section className="section">
+            <div className="container">
+                <h1 className="title bold" id="ville">
+                    {city}
+                </h1>
+                <h2 className="title title--niveau3">
+                    {date.toLocaleDateString("fr-FR", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                    })}
+                </h2>
             </div>
-            <div className="row justify-content-center">
-                <div className="col-md-8 text-center">
-                    <input
-                        type="text"
-                        value={cityInput}
-                        onChange={(e) => setCityInput(e.target.value)}
-                        placeholder="Entrez une ville"
+            <div className="container--second">
+                <div>
+                    <h3 className="title title--niveau3 uppercase">
+                        {date.toLocaleDateString("fr-FR", { weekday: "long" })}
+                    </h3>
+                    <p className="bold temperature" id="temperature_label">
+                        {Math.round(temperature)}°C
+                    </p>
+                </div>
+                {weatherData && (
+                    <img
+                        src={getWeatherIcon(weatherData.weather[0].description)}
+                        alt={weatherData.weather[0].description}
                     />
-                    <button onClick={handleCityChange}>Changer de ville</button>
-                </div>
+                )}
             </div>
-        </div>
+
+            <ul className="additional__info">
+                <li className="additional__el">
+                    <img
+                        className="additional__img"
+                        src="src/assets/images/humidite_1.svg"
+                        alt="humidité"
+                    />
+                    <p>Humidité</p>
+                    <div>{humidity}%</div>
+                </li>
+                <li className="additional__el">
+                    <img
+                        className="additional__img"
+                        src="src/assets/images/uv.png"
+                        alt="U.V"
+                    />
+                    <p>Indice UV</p>
+                    <div>
+                        {uvIndex} {interpretUVIndex(uvIndex)}
+                    </div>
+                </li>
+                <li className="additional__el">
+                    <img
+                        className="additional__img"
+                        src="src/assets/images/vent.png"
+                        alt="vent"
+                    />
+                    <p>Vent</p>
+                    <div>{(windSpeed * 3.6).toFixed(1)} km/h</div>
+                </li>
+            </ul>
+        </section>
     );
 };
 
