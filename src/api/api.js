@@ -3,7 +3,6 @@ import axios from "axios";
 
 const api = {
     fetchWeather: async (city) => {
-        // eslint-disable-next-line no-useless-catch
         try {
             const response = await axios.get(
                 "https://api.openweathermap.org/data/2.5/weather",
@@ -15,13 +14,15 @@ const api = {
                     },
                 },
             );
-            return response.data;
+            const { data } = response;
+            const { lat, lon } = data.coord;
+            return { ...data, lat, lon };  // maintenant il retourne aussi les coordonnées lat et lon
         } catch (error) {
+            console.error(error);
             throw error;
         }
     },
     fetchWeatherWithCoords: async (lat, lon) => {
-        // eslint-disable-next-line no-useless-catch
         try {
             const response = await axios.get(
                 "https://api.openweathermap.org/data/2.5/weather",
@@ -36,11 +37,11 @@ const api = {
             );
             return response.data;
         } catch (error) {
+            console.error(error);
             throw error;
         }
     },
     fetchUVIndex: async (lat, lon) => {
-        // eslint-disable-next-line no-useless-catch
         try {
             const response = await axios.get(
                 "https://api.openweathermap.org/data/2.5/uvi",
@@ -54,11 +55,11 @@ const api = {
             );
             return response.data;
         } catch (error) {
+            console.error(error);
             throw error;
         }
     },
     fetchForecast: async (lat, lon) => {
-        // eslint-disable-next-line no-useless-catch
         try {
             const response = await axios.get(
                 "https://api.openweathermap.org/data/2.5/onecall",
@@ -74,6 +75,7 @@ const api = {
             );
             return response.data;
         } catch (error) {
+            console.error(error);
             throw error;
         }
     },

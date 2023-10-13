@@ -4,24 +4,26 @@ import "./prevision.scss";
 import api from "../../api/api";
 import getWeatherIcon from "../../utils/getWeatherIcon";
 
-const Prevision = () => {
-    const [forecastData, setForecastData] = useState([]);
+const Prevision = ({ coords }) => {
+    const [forecastData, setForecastData] = React.useState([]);
+    console.log("Coords:", coords);
+
+    const fetchForecast = async () => {
+        try {
+            const data = await api.fetchForecast(coords.lat, coords.lon);
+            console.log("API Response:", data); // Ajoutez cette ligne
+            setForecastData(data.daily.slice(1, 7)); // Récupère les données des 6 prochains jours
+        } catch (error) {
+            alert("Un problème est intervenu, merci de revenir plus tard.");
+        }
+    };
 
     useEffect(() => {
-        const fetchForecast = async () => {
-            try {
-                // Supposons que ces coordonnées soient pour Namur, Belgique
-                const lat = 50.4669;
-                const lon = 4.8675;
-                const data = await api.fetchForecast(lat, lon);
-                setForecastData(data.daily.slice(1, 7)); // Récupère les données des 6 prochains jours
-            } catch (error) {
-                alert("Un problème est intervenu, merci de revenir plus tard.");
-            }
-        };
-
-        fetchForecast();
-    }, []);
+        console.log("useEffect called", coords); // Ajoutez cette ligne
+        if (coords) {
+            fetchForecast();
+        }
+    }, [coords]);
 
     return (
         <section className="section">

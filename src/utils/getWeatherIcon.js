@@ -32,6 +32,8 @@ const getWeatherIcon = (description) => {
             return "src/assets/images/moderate_rain.png"; //
         case "scattered clouds":
             return "src/assets/images/scattered_clouds.png"; //
+        case "light rain": // Ajout d'une correspondance pour "light rain"
+            return "src/assets/images/moderate_rain.png";
         default:
             // Pour tout autre état météorologique non pris en charge
             return "src/assets/images/default.png"; // Retourne l'URL de l'icône par défaut

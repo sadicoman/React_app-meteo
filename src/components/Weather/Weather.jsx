@@ -4,19 +4,19 @@ import getWeatherIcon from "../../utils/getWeatherIcon";
 import api from "../../api/api";
 import "./Weather.scss";
 
-const Weather = () => {
-    const [temperature, setTemperature] = useState("xx.x");
-    const [city, setCity] = useState("Paris");
-    const [humidity, setHumidity] = useState(null);
-    const [uvIndex, setUvIndex] = useState(null);
-    const [windSpeed, setWindSpeed] = useState(null);
-    const [date, setDate] = useState(new Date());
-    const [weatherData, setWeatherData] = useState(null);
+const Weather = ({ coords }) => {
+    const [temperature, setTemperature] = React.useState("xx.x");
+    const [city, setCity] = React.useState("Bruxelles");
+    const [humidity, setHumidity] = React.useState(null);
+    const [uvIndex, setUvIndex] = React.useState(null);
+    const [windSpeed, setWindSpeed] = React.useState(null);
+    const [date, setDate] = React.useState(new Date());
+    const [weatherData, setWeatherData] = React.useState(null);
 
     const fetchWeatherWithCoords = async (lat, lon) => {
         try {
             const weatherData = await api.fetchWeatherWithCoords(lat, lon);
-            setWeatherData(weatherData); // Ajoutez cette ligne pour mettre à jour weatherData
+            setWeatherData(weatherData);
             setTemperature(weatherData.main.temp);
             setCity(weatherData.name);
             setHumidity(weatherData.main.humidity);
@@ -30,23 +30,10 @@ const Weather = () => {
     };
 
     useEffect(() => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition((position) => {
-                fetchWeatherWithCoords(
-                    position.coords.latitude,
-                    position.coords.longitude,
-                );
-            });
-        } else {
-            alert("La géolocalisation n'est pas prise en charge par ce navigateur.");
+        if (coords) {
+            fetchWeatherWithCoords(coords.lat, coords.lon);
         }
-
-        const intervalId = setInterval(() => {
-            setDate(new Date());
-        }, 1000);
-
-        return () => clearInterval(intervalId); // Nettoyage de l'intervalle lors du démontage du composant
-    }, []);
+    }, [coords]);
 
     const interpretUVIndex = (uvIndex) => {
         if (uvIndex < 3) {
